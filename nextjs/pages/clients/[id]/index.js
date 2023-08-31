@@ -1,7 +1,10 @@
 import React from 'react'
 
-export default function ClientsPage() {
+export default function clientsProject
+() {
   return (
-    <div>Clients Project Page</div>
+    <div>
+        clientsProject
+    </div>
   )
 }
