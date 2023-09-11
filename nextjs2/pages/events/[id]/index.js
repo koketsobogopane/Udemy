@@ -12,7 +12,7 @@ export default function EventDetail() {
 
   const eventId = router.query.id
   const event = getEventById(eventId);
-  console.log ( eventId)
+  
 
   if (!event) {
     return <ErrorAlert><p>No event found!</p></ErrorAlert>

@@ -12,9 +12,8 @@ function EventItem(props) {
     month: 'long',
     year: 'numeric',
   });
-  const formattedAddress = location.replace(', ', '\n');
+  const formattedAddress = location ? location.replace(', ', '\n'): 'location not found'  ;
   const exploreLink = `/events/${id}`;
-
   return (
     <li className={classes.item}>
       <img src={'/' + image} alt={title} />
