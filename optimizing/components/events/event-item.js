@@ -7,14 +7,14 @@ import classes from './event-item.module.css';
 function EventItem(props) {
   const { title, image, date, location, id } = props;
 
+  console.log (props)
   const humanReadableDate = new Date(date).toLocaleDateString('en-US', {
     day: 'numeric',
     month: 'long',
     year: 'numeric',
   });
-  const formattedAddress = location.replace(', ', '\n');
+  const formattedAddress = location ? location.replace(', ', '\n'): 'location not found'  ;
   const exploreLink = `/events/${id}`;
-
   return (
     <li className={classes.item}>
       <img src={'/' + image} alt={title} />
