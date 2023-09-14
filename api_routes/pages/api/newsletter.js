@@ -1,4 +1,4 @@
-import { MongoClient } from 'mongodb'
+
 import { connectToMongo, insertDocument } from '../../helpers/db-util'
 
 async function handler( req, res){

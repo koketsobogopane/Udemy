@@ -1,5 +1,5 @@
 
-import { MongoClient } from "mongodb";
+
 import { connectToMongo, getAllComments, insertDocument } from "../../../helpers/db-util";
 
 async function handler(req, res){
