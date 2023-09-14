@@ -5,7 +5,14 @@ import { connectToMongo, getAllComments, insertDocument } from "../../../helpers
 async function handler(req, res){
     const eventId = req.query.eventId;
 
-    const client = new MongoClient('mongodb+srv://koketsobogopanenov24:zFw9JKhIFncPjjgg@cluster0.ssgd9wx.mongodb.net/');
+    let client
+
+    try {
+        client = await connectToMongo()
+    } catch (error){
+        res.status(500).json({ message: 'Could not connect to database'})
+        return 
+    }
 
 
     if ( req.method === 'POST'){
@@ -31,31 +38,27 @@ async function handler(req, res){
 
 
         
-    //    const db = client.db();
-    const client = await connectToMongo()
-    const result = await insertDocument( client, newComment, 'comments')
-    //    const result = await db.collection('comments').insertOne(newComment);
-
-    //    console.log(result);
-
-        
-        newComment._id = result.insertedId
-        console.log(result)
-        res.status(201).json({ message: 'Added comment', comment: newComment});
+    
+    try{
+        const result = await insertDocument( client, newComment, 'comments')
+                newComment._id = result.insertedId
+                console.log(result)
+                res.status(201).json({ message: 'Added comment', comment: newComment});
+    } catch (error){
+        res.status(500).json('Error adding comment.')
+    }
+   
     }
 
     if ( req.method === 'GET'){
 
-        const client = await connectToMongo()
-        const comments = await getAllComments( client, 'comments', {})
-
-                
-            
-        console.log(comments)
-        // const collection = await connectToMongo('comments')
-        // const commentList = await collection.find({}).toArray()
-        
-        res.status(200).json({ comments: comments})
+        try {
+            const comments = await getAllComments( client, 'comments', {_id: -1})
+            res.status(200).json({ comments: comments})
+        } catch (error) {
+            res.status(500).json("Couldn't get all the comments.")
+        }
+         
     }
     client.close()
 }

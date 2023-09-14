@@ -12,14 +12,14 @@ export async function connectToMongo(){
 }
 
 export async function insertDocument ( client, document, collection){
-    const db = client.db()
+    const db = client.db('events')
     const results = db.collection(collection).insertOne(document)
     return results
 }
 
 export async function getAllComments( client, collection, sorting){
-    const db = client.db();
-    const comments = await db.collection(collection).find().toArry() 
+    const db = client.db('events');
+    const comments = await db.collection(collection).find({}).toArray();
     return comments
 }
 

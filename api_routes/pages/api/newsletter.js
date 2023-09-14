@@ -10,10 +10,22 @@ async function handler( req, res){
             return 
         }
 
-        const client = await connectToMongo()
-        await insertDocument( client, {email: userEmail}, 'newsletter')
-        
-        client.close()
+        let client 
+
+        try {
+             client = await connectToMongo()
+        } catch (error){
+            res.status(500).json({ message: 'Connecting to the database failed.'})
+            return 
+        }
+
+        try {
+            await insertDocument( client, {email: userEmail}, 'newsletter')
+            client.close()
+        } catch(error){
+            res.status(500).json({ message: 'Inserting data failed.'})
+            return 
+        }
         
         res.status(201).json({ message: 'Signed up'})
 
