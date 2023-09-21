@@ -1,6 +1,7 @@
-import React from 'react'
+import { Fragment } from 'react'
 import PostContent from '../../components/posts/post-detail/post-content'
 import { getFileData, getPostsFile } from '../../lib/posts-utils';
+import Head from 'next/head'
 
 export function getStaticProps(context){
     const { params } = context;
@@ -29,6 +30,12 @@ export function getStaticPaths(){
 
 export default function PostDetailsPage(props) {
   return (
-    <PostContent post={props.post} />
+    <Fragment>
+        <Head>
+            <title>{props.post.title}</title>
+        </Head>
+        <PostContent post={props.post} />
+    </Fragment>
+    
   )
 }

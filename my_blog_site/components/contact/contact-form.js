@@ -1,4 +1,4 @@
-import { useState } from 'react'
+import { useEffect, useState } from 'react'
 import classes from './contact-form.module.css'
 import Notification from "../ui/notification"
 
@@ -18,14 +18,25 @@ async function sendData(contactDetails){
     
 }
 
+
+
 export default function ContactForm() {
     
     const [email, setEmail] = useState('')
     const [name, setName] = useState('')
     const [message, setMessage] = useState('')
     const [requestStatus, setRequestStatus] = useState()
+    const [requestError, setRequestError] = useState()
 
-    
+    useEffect(()=> {
+        if (requestStatus === 'success' || requestStatus === 'error') {
+            const timer = setTimeout (() => {
+                setRequestStatus(null)
+                setRequestError(null)
+            }, 3000)
+            return () => clearTimeout(timer)
+        }
+    }, [ requestStatus ])
     async function submitDataHandler(event) {
         event.preventDefault()
 
@@ -36,8 +47,12 @@ export default function ContactForm() {
          try{
             await sendData({email: email, name: name, message: message})
             setRequestStatus('success')
+            setEmail('')
+            setName('')
+            setMessage('')
          } catch (error){
             setRequestStatus('error')
+            setRequestError(error)
          }
     }
 
@@ -62,7 +77,7 @@ export default function ContactForm() {
         notification= {
             status: 'error',
             title: 'error',
-            message: 'Could not successfully submit you message!'
+            message: requestError
         }
     }
 
@@ -89,6 +104,15 @@ export default function ContactForm() {
                     <button>Send message</button>
                 </div>
         </form>
+        {
+            notification && (
+                <Notification
+                    status={notification.status}
+                    title={notification.title}
+                    message={notification.message}
+                    />
+            )
+        }
     </section>
   )
 }
