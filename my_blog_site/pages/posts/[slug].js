@@ -33,6 +33,7 @@ export default function PostDetailsPage(props) {
     <Fragment>
         <Head>
             <title>{props.post.title}</title>
+            <meta name='description' content={props.post.excerpt}/>
         </Head>
         <PostContent post={props.post} />
     </Fragment>
